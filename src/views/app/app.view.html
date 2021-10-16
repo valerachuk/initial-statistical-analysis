@@ -1,0 +1,35 @@
+<v-app>
+  <v-app-bar app dark dense color="cyan">
+    <v-spacer />
+    <v-app-bar-title class="text-uppercase"
+      >Initial statistical analysis
+    </v-app-bar-title>
+    <v-spacer />
+
+    <template v-slot:extension>
+      <v-tabs v-model="tab" background-color="cyan" dark centered show-arrows>
+        <v-tabs-slider color="yellow" />
+        <v-tab
+          v-for="{name, routeName} in toolbarTabs"
+          :to="{name: routeName}"
+          :key="routeName"
+        >
+          {{ name }}
+        </v-tab>
+      </v-tabs>
+    </template>
+  </v-app-bar>
+
+  <v-main>
+    <v-container>
+      <v-file-input
+        show-size
+        outlined
+        dense
+        placeholder="Upload text file with data, please"
+        @change="onFileUploaded"
+      />
+    </v-container>
+    <router-view />
+  </v-main>
+</v-app>
