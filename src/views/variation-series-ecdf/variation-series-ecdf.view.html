@@ -1,0 +1,28 @@
+<div>
+  <v-card>
+    <v-card-title>Empirical Cumulative Distribution Function</v-card-title>
+    <v-card-text>
+      TODO
+    </v-card-text>
+  </v-card>
+
+  <v-card class="mt-4">
+    <v-card-title>Variation series</v-card-title>
+    <v-card-text>
+      <v-data-table
+        :headers="variationSeriesHeades"
+        :items="variationSeries || []"
+      >
+        <template slot="body.append">
+          <tr v-if="variationSeries != null">
+            <th>Totals</th>
+            <th>-</th>
+            <th>{{ frequencySum }}</th>
+            <th>{{ relativeFrequencySum }}</th>
+            <th>-</th>
+          </tr>
+        </template>
+      </v-data-table>
+    </v-card-text>
+  </v-card>
+</div>

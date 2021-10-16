@@ -1,27 +1,23 @@
+import IsaFileInput from '../../components/isa-file-input/isa-file-input.component.vue';
+
 export default {
+  name: 'App',
+
+  components: {
+    IsaFileInput
+  },
+
   data: () => ({
     tab: null,
     toolbarTabs: [
       {
         name: 'Variation series & ECDF',
-        routeName: 'VariationSeriesAndECDF'
+        routeName: 'VariationSeriesAndEcdf'
       },
       {
         name: 'bbb',
         routeName: 'b'
       }
     ]
-  }),
-
-  methods: {
-    async onFileUploaded (file) {
-      if (file == null) {
-        console.log('null');
-        return;
-      }
-
-      const text = await file.text();
-      console.log(text);
-    }
-  }
+  })
 };

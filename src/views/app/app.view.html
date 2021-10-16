@@ -22,14 +22,8 @@
 
   <v-main>
     <v-container>
-      <v-file-input
-        show-size
-        outlined
-        dense
-        placeholder="Upload text file with data, please"
-        @change="onFileUploaded"
-      />
+      <isa-file-input />
+      <router-view />
     </v-container>
-    <router-view />
   </v-main>
 </v-app>
