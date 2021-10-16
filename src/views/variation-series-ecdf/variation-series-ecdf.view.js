@@ -1,10 +1,15 @@
 import { mapState } from 'vuex';
+import { Plotly } from 'vue-plotly';
 
 export default {
   name: 'VariationSeriesEcdf',
 
+  components: {
+    Plotly
+  },
+
   data: () => ({
-    variationSeriesHeades: [
+    variationSeriesHeaders: [
       {
         text: 'Series number',
         value: 'seriesNumber',
@@ -30,7 +35,16 @@ export default {
         value: 'ecdfValue',
         sortable: false
       }
-    ]
+    ],
+
+    data: [{
+      x: [1, 2, 3, 4],
+      y: [10, 15, 13, 17],
+      type: 'scatter'
+    }],
+    layout: {
+      title: 'My graph'
+    }
   }),
 
   computed: {

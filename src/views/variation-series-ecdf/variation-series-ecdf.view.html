@@ -2,7 +2,7 @@
   <v-card>
     <v-card-title>Empirical Cumulative Distribution Function</v-card-title>
     <v-card-text>
-      TODO
+      <plotly :data="data" :layout="layout" :display-mode-bar="false"></plotly>
     </v-card-text>
   </v-card>
 
@@ -10,7 +10,7 @@
     <v-card-title>Variation series</v-card-title>
     <v-card-text>
       <v-data-table
-        :headers="variationSeriesHeades"
+        :headers="variationSeriesHeaders"
         :items="variationSeries || []"
       >
         <template slot="body.append">
