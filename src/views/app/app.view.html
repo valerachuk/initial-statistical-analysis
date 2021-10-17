@@ -1,0 +1,30 @@
+<v-app>
+  <v-app-bar app dark dense color="cyan">
+    <v-spacer />
+    <v-app-bar-title class="text-uppercase"
+      >Initial statistical analysis
+    </v-app-bar-title>
+    <v-spacer />
+
+    <template v-slot:extension v-if="isValidDatasetLoaded">
+      <v-tabs v-model="tab" background-color="cyan" dark centered show-arrows>
+        <v-tabs-slider color="yellow" />
+        <v-tab
+          v-for="{name, routeName} in toolbarTabs"
+          :to="{name: routeName}"
+          :key="routeName"
+        >
+          {{ name }}
+        </v-tab>
+      </v-tabs>
+    </template>
+  </v-app-bar>
+
+  <v-main>
+    <v-container>
+      <isa-welcome-card v-if="!isValidDatasetLoaded" class="mb-4" />
+      <isa-file-input />
+      <router-view v-if="isValidDatasetLoaded" />
+    </v-container>
+  </v-main>
+</v-app>

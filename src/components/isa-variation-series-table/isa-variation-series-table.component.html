@@ -1,0 +1,11 @@
+<v-data-table :headers="variationSeriesHeaders" :items="variationSeries || []">
+  <template slot="body.append">
+    <tr v-if="variationSeries != null">
+      <th>Total</th>
+      <th>-</th>
+      <th>{{ frequencySum }}</th>
+      <th>{{ relativeFrequencySum }}</th>
+      <th>-</th>
+    </tr>
+  </template>
+</v-data-table>
