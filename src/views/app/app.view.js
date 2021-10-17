@@ -14,11 +14,11 @@ export default {
     toolbarTabs: [
       {
         name: 'Variation series & ECDF',
-        routeName: 'VariationSeriesAndEcdf'
+        routeName: 'VariationSeriesEcdf'
       },
       {
-        name: 'bbb',
-        routeName: 'b'
+        name: 'Histogram & KDE',
+        routeName: 'HistogramKde'
       }
     ]
   }),

@@ -1,4 +1,4 @@
-export function computeVariationSeries (series) {
+export function calculateVariationSeries (series) {
   const sortedSeries = series
     .concat()
     .sort((a, b) => a - b);

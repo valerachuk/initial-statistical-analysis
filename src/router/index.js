@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import { VariationSeriesEcdf } from '@views';
+import {
+  VariationSeriesEcdf,
+  HistogramKde
+} from '@views';
 
 Vue.use(VueRouter);
 
@@ -8,17 +11,18 @@ const routes = [
   {
     path: '/',
     redirect: {
-      name: 'VariationSeriesAndEcdf'
+      name: 'VariationSeriesEcdf'
     }
   },
   {
     path: '/variation-series-ecdf',
-    name: 'VariationSeriesAndEcdf',
+    name: 'VariationSeriesEcdf',
     component: VariationSeriesEcdf
   },
   {
-    path: '/b',
-    name: 'b'
+    path: '/histogram-kde',
+    name: 'HistogramKde',
+    component: HistogramKde
   }
 ];
 
