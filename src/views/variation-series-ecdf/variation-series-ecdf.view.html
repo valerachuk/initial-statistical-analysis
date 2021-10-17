@@ -1,28 +1,17 @@
 <div>
   <v-card>
-    <v-card-title>Empirical Cumulative Distribution Function</v-card-title>
+    <v-card-title class="text-capitalize"
+      >Empirical cumulative distribution function</v-card-title
+    >
     <v-card-text>
-      <plotly :data="data" :layout="layout" :display-mode-bar="false"></plotly>
+      <isa-ecdf-plot />
     </v-card-text>
   </v-card>
 
   <v-card class="mt-4">
-    <v-card-title>Variation series</v-card-title>
+    <v-card-title class="text-capitalize">Variation series</v-card-title>
     <v-card-text>
-      <v-data-table
-        :headers="variationSeriesHeaders"
-        :items="variationSeries || []"
-      >
-        <template slot="body.append">
-          <tr v-if="variationSeries != null">
-            <th>Totals</th>
-            <th>-</th>
-            <th>{{ frequencySum }}</th>
-            <th>{{ relativeFrequencySum }}</th>
-            <th>-</th>
-          </tr>
-        </template>
-      </v-data-table>
+      <isa-variation-series-table />
     </v-card-text>
   </v-card>
 </div>

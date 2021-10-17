@@ -52,5 +52,10 @@ export default new Vuex.Store({
       dispatch('clearAllData');
       return false;
     }
+  },
+  getters: {
+    isValidDatasetLoaded (state) {
+      return state.dataset != null;
+    }
   }
 });

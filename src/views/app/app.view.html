@@ -6,7 +6,7 @@
     </v-app-bar-title>
     <v-spacer />
 
-    <template v-slot:extension>
+    <template v-slot:extension v-if="isValidDatasetLoaded">
       <v-tabs v-model="tab" background-color="cyan" dark centered show-arrows>
         <v-tabs-slider color="yellow" />
         <v-tab
@@ -22,8 +22,9 @@
 
   <v-main>
     <v-container>
+      <isa-welcome-card v-if="!isValidDatasetLoaded" class="mb-4" />
       <isa-file-input />
-      <router-view />
+      <router-view v-if="isValidDatasetLoaded" />
     </v-container>
   </v-main>
 </v-app>

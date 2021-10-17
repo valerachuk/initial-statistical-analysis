@@ -1,10 +1,12 @@
-import IsaFileInput from '../../components/isa-file-input/isa-file-input.component.vue';
+import { IsaFileInput, IsaWelcomeCard } from '@components';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'App',
 
   components: {
-    IsaFileInput
+    IsaFileInput,
+    IsaWelcomeCard
   },
 
   data: () => ({
@@ -19,5 +21,9 @@ export default {
         routeName: 'b'
       }
     ]
-  })
+  }),
+
+  computed: {
+    ...mapGetters(['isValidDatasetLoaded'])
+  }
 };

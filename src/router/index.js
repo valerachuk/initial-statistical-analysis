@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import VariationSeriesEcdf from '../views/variation-series-ecdf/variation-series-ecdf.view.vue';
+import { VariationSeriesEcdf } from '@views';
 
 Vue.use(VueRouter);
 
