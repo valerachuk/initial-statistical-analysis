@@ -13,13 +13,15 @@ export function calculateVariationSeriesClasses (dataset, numberOfClasses) {
     const upperBound = isLastClass ? datasetMax : lowerBound + classStep;
     const frequency = numberOfElementsInBounds(dataset, lowerBound, isLastClass ? Infinity : upperBound);
     const relativeFrequency = frequency / dataset.length;
+    const ecdfValue = relativeFrequency + (variationSeriesClasses.at(-1)?.ecdfValue ?? 0);
 
     variationSeriesClasses.push({
       classNumber: i,
       lowerBound,
       upperBound,
       frequency,
-      relativeFrequency
+      relativeFrequency,
+      ecdfValue
     });
   }
 

@@ -2,18 +2,18 @@ import { mapState } from 'vuex';
 import { defaultRound } from '@math-services';
 
 export default {
-  name: 'IsaVariationSeriesTable',
+  name: 'IsaVariationSeriesClassesTable',
 
   data: () => ({
-    variationSeriesHeaders: [
+    variationSeriesClassesHeaders: [
       {
-        text: 'Series number',
-        value: 'seriesNumber',
+        text: 'Class number',
+        value: 'classNumber',
         sortable: false
       },
       {
-        text: 'Value',
-        value: 'value',
+        text: 'Range',
+        value: 'range',
         sortable: false
       },
       {
@@ -35,35 +35,38 @@ export default {
   }),
 
   computed: {
-    ...mapState(['variationSeries']),
+    ...mapState(['variationSeriesClasses']),
 
-    variationSeriesReadable () {
-      return this.variationSeries.map(series => {
+    variationSeriesClassesReadable () {
+      return this.variationSeriesClasses.map((variationClass, index) => {
         const {
-          value,
+          lowerBound,
+          upperBound,
           relativeFrequency,
           ecdfValue,
           ...rest
-        } = series;
+        } = variationClass;
+
+        const isLast = index === this.variationSeriesClasses.length - 1;
 
         return {
-          value: defaultRound(value),
+          ...rest,
           relativeFrequency: defaultRound(relativeFrequency),
           ecdfValue: defaultRound(ecdfValue),
-          ...rest
+          range: `[${defaultRound(lowerBound)}; ${defaultRound(upperBound)}${isLast ? ']' : ')'}`
         };
       });
     },
 
     frequencySum () {
-      const sum = this.variationSeries
+      const sum = this.variationSeriesClasses
         .map(record => record.frequency)
         .reduce((acc, x) => acc + x, 0);
       return defaultRound(sum);
     },
 
     relativeFrequencySum () {
-      const sum = this.variationSeries
+      const sum = this.variationSeriesClasses
         .map(record => record.relativeFrequency)
         .reduce((acc, x) => acc + x, 0);
       return defaultRound(sum);

@@ -1,10 +1,15 @@
-import { IsaHistogramKdePlot, IsaHistogramClassCountField } from '@components';
+import {
+  IsaHistogramKdePlot,
+  IsaHistogramClassCountField,
+  IsaVariationSeriesClassesTable
+} from '@components';
 
 export default {
   name: 'HistogramKde',
 
   components: {
     IsaHistogramKdePlot,
-    IsaHistogramClassCountField
+    IsaHistogramClassCountField,
+    IsaVariationSeriesClassesTable
   }
 };
