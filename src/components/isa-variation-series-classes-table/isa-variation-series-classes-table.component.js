@@ -1,5 +1,5 @@
 import { mapState } from 'vuex';
-import { defaultRound } from '@math-services';
+import { defaultRound, sum } from '@math-services';
 
 export default {
   name: 'IsaVariationSeriesClassesTable',
@@ -59,17 +59,15 @@ export default {
     },
 
     frequencySum () {
-      const sum = this.variationSeriesClasses
-        .map(record => record.frequency)
-        .reduce((acc, x) => acc + x, 0);
-      return defaultRound(sum);
+      const frequencies = this.variationSeriesClasses
+        .map(record => record.frequency);
+      return defaultRound(sum(frequencies));
     },
 
     relativeFrequencySum () {
-      const sum = this.variationSeriesClasses
-        .map(record => record.relativeFrequency)
-        .reduce((acc, x) => acc + x, 0);
-      return defaultRound(sum);
+      const relativeFrequencies = this.variationSeriesClasses
+        .map(record => record.relativeFrequency);
+      return defaultRound(sum(relativeFrequencies));
     }
   }
 };

@@ -1,5 +1,8 @@
 import { Plotly } from 'vue-plotly';
 import { mapState } from 'vuex';
+import { createKernelDensityEstimation } from '@math-services';
+
+const KDE_PLOT_RESOLUTION = 50;
 
 export default {
   name: 'IsaHistogramKdePlot',
@@ -27,33 +30,79 @@ export default {
   }),
 
   computed: {
-    ...mapState(['variationSeriesClasses']),
+    ...mapState([
+      'variationSeriesClasses',
+      'variationSeriesClassCount',
+      'dataset',
+      'kdeBandwidth'
+    ]),
+
     histogramToPlotlyScatter () {
-      if (this.variationSeriesClasses == null || this.variationSeriesClasses.length === 0) {
+      if (this.variationSeriesClasses.length === 0) {
         return { x: [], y: [] };
       }
 
-      const y = [0];
-      const x = [this.variationSeriesClasses.at(0).lowerBound];
+      const yAxis = [0];
+      const xAxis = [this.variationSeriesClasses.at(0).lowerBound];
 
       this.variationSeriesClasses.forEach(({ lowerBound, upperBound, relativeFrequency }) => {
-        x.push(lowerBound, upperBound);
-        y.push(relativeFrequency, relativeFrequency);
+        xAxis.push(lowerBound, upperBound);
+        yAxis.push(relativeFrequency, relativeFrequency);
       });
 
-      y.push(0);
-      x.push(x.at(-1));
+      yAxis.push(0);
+      xAxis.push(xAxis.at(-1));
 
-      return { x, y };
+      return {
+        x: xAxis,
+        y: yAxis
+      };
+    },
+
+    kdeToPlotlyScatter () {
+      const lowerBoundX = Math.min(...this.dataset);
+      const upperBoundX = Math.max(...this.dataset);
+      const range = upperBoundX - lowerBoundX;
+
+      const resolutionStep = range / KDE_PLOT_RESOLUTION;
+      const kernelDensityEstimation = createKernelDensityEstimation(this.dataset, this.kdeBandwidth);
+
+      const xAxis = [];
+      const yAxis = [];
+
+      for (let i = 0; i <= KDE_PLOT_RESOLUTION; i++) {
+        const histogramClassWidth = range / this.variationSeriesClassCount; // h
+        const x = lowerBoundX + resolutionStep * i;
+        const y = kernelDensityEstimation(x) * histogramClassWidth;
+
+        xAxis.push(x);
+        yAxis.push(y);
+      }
+
+      console.log({ xAxis, yAxis });
+
+      return {
+        x: xAxis,
+        y: yAxis
+      };
     },
 
     plotlyData () {
-      return [{
-        ...this.histogramToPlotlyScatter,
-        type: 'scatter',
-        mode: 'lines+markers',
-        fill: 'tozeroy'
-      }];
+      return [
+        {
+          ...this.histogramToPlotlyScatter,
+          type: 'scatter',
+          mode: 'lines+markers',
+          fill: 'tozeroy',
+          name: 'Histgram'
+        },
+        {
+          ...this.kdeToPlotlyScatter,
+          type: 'scatter',
+          line: { shape: 'spline' },
+          name: 'KDE'
+        }
+      ];
     }
 
   }

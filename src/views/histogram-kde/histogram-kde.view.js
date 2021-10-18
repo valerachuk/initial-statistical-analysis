@@ -1,7 +1,8 @@
 import {
   IsaHistogramKdePlot,
   IsaHistogramClassCountField,
-  IsaVariationSeriesClassesTable
+  IsaVariationSeriesClassesTable,
+  IsaKdeBandwidthField
 } from '@components';
 
 export default {
@@ -10,6 +11,7 @@ export default {
   components: {
     IsaHistogramKdePlot,
     IsaHistogramClassCountField,
-    IsaVariationSeriesClassesTable
+    IsaVariationSeriesClassesTable,
+    IsaKdeBandwidthField
   }
 };
