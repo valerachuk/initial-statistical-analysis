@@ -1,0 +1,21 @@
+<v-text-field
+  label="KDE bandwidth"
+  type="number"
+  :value="kdeBandwidth"
+  @input="updateBandwidth"
+  :error-messages="kdeBandwidthErrorMessage"
+  outlined
+  dense
+  step="0.01"
+>
+  <template v-slot:prepend>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <v-icon v-on="on" @click="resetKdeBandwidth">
+          mdi-refresh
+        </v-icon>
+      </template>
+      Reset to default
+    </v-tooltip>
+  </template>
+</v-text-field>

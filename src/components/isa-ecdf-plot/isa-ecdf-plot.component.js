@@ -9,7 +9,7 @@ export default {
   },
 
   data: () => ({
-    layout: {
+    plotlyLayout: {
       margin: {
         l: 50,
         r: 15,

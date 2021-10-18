@@ -1,0 +1,20 @@
+<v-text-field
+  label="Class count"
+  type="number"
+  :value="variationSeriesClassCount"
+  @input="updateClassCount"
+  :error-messages="classCountErrorMessage"
+  outlined
+  dense
+>
+  <template v-slot:prepend>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <v-icon v-on="on" @click="resetClassCount">
+          mdi-refresh
+        </v-icon>
+      </template>
+      Reset to default
+    </v-tooltip>
+  </template>
+</v-text-field>

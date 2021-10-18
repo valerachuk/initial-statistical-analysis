@@ -11,6 +11,7 @@ module.exports = {
   chainWebpack: config => {
     config.resolve.alias
       .set('@components', path.resolve('src/components/'))
-      .set('@views', path.resolve('src/views/'));
+      .set('@views', path.resolve('src/views/'))
+      .set('@math-services', path.resolve('src/math-services/'));
   }
 };
