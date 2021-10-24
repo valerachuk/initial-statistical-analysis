@@ -19,6 +19,10 @@ export default {
       {
         name: 'Histogram & KDE',
         routeName: 'HistogramKde'
+      },
+      {
+        name: 'Statistical characteristics',
+        routeName: 'StatisticalCharacteristics'
       }
     ]
   }),

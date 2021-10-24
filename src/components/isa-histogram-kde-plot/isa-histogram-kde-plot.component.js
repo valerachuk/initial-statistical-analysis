@@ -63,6 +63,7 @@ export default {
       const lowerBoundX = Math.min(...this.dataset);
       const upperBoundX = Math.max(...this.dataset);
       const range = upperBoundX - lowerBoundX;
+      const histogramClassWidth = range / this.variationSeriesClassCount; // h
 
       const resolutionStep = range / KDE_PLOT_RESOLUTION;
       const kernelDensityEstimation = createKernelDensityEstimation(this.dataset, this.kdeBandwidth);
@@ -71,7 +72,6 @@ export default {
       const yAxis = [];
 
       for (let i = 0; i <= KDE_PLOT_RESOLUTION; i++) {
-        const histogramClassWidth = range / this.variationSeriesClassCount; // h
         const x = lowerBoundX + resolutionStep * i;
         const y = kernelDensityEstimation(x) * histogramClassWidth;
 

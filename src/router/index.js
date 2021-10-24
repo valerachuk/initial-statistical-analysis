@@ -2,7 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import {
   VariationSeriesEcdf,
-  HistogramKde
+  HistogramKde,
+  StatisticalCharacteristics
 } from '@views';
 
 Vue.use(VueRouter);
@@ -23,6 +24,11 @@ const routes = [
     path: '/histogram-kde',
     name: 'HistogramKde',
     component: HistogramKde
+  },
+  {
+    path: '/statistical-characteristics',
+    name: 'StatisticalCharacteristics',
+    component: StatisticalCharacteristics
   }
 ];
 
