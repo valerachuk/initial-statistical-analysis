@@ -1,0 +1,22 @@
+<v-text-field
+  label="α (error)"
+  type="number"
+  :value="outliersAlpha"
+  @input="validateAndUpdateOutliersAlpha"
+  :error-messages="outliersAlphaErrorMessage"
+  outlined
+  dense
+  step="0.01"
+  :disabled="hideOutliers"
+>
+  <template v-slot:prepend>
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on }">
+        <v-icon v-on="on" @click="resetAlpha">
+          mdi-refresh
+        </v-icon>
+      </template>
+      Reset to default
+    </v-tooltip>
+  </template>
+</v-text-field>

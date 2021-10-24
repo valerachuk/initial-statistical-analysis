@@ -8,6 +8,7 @@ import {
   calculateOptimalBandwidth,
   defaultRound
 } from '@math-services';
+import { OUTLIERS_ALPHA_DEFAULT } from '@constants';
 
 Vue.use(Vuex);
 
@@ -17,7 +18,9 @@ export default new Vuex.Store({
     variationSeries: null,
     variationSeriesClasses: null,
     variationSeriesClassCount: null,
-    kdeBandwidth: null
+    kdeBandwidth: null,
+    outliersAlpha: null,
+    hideOutliers: false
   },
 
   mutations: {
@@ -27,6 +30,9 @@ export default new Vuex.Store({
       state.variationSeriesClasses = null;
       state.variationSeriesClassCount = null;
       state.kdeBandwidth = null;
+
+      state.outliersAlpha = null;
+      state.hideOutliers = false;
     },
 
     SET_DATASET (state, newDataset) {
@@ -44,14 +50,29 @@ export default new Vuex.Store({
 
     SET_KDE_BANDWIDTH (state, newKdeBandwidth) {
       state.kdeBandwidth = newKdeBandwidth;
+    },
+
+    SET_OUTLIERS_ALPHA (state, newAlpha) {
+      state.outliersAlpha = newAlpha;
+    },
+
+    SET_HIDE_OUTLIERS (state, newHideOutliers) {
+      state.hideOutliers = newHideOutliers;
     }
   },
 
   actions: {
-    calculateStats ({ dispatch }) {
+    computeNonOutliersStats ({ dispatch }) {
       dispatch('calculateVariationSeries');
       dispatch('calculateDefaultVariationSeriesClasses');
       dispatch('calculateDefaultKdeBandwidth');
+    },
+
+    initializeStats ({ dispatch }) {
+      dispatch('computeNonOutliersStats');
+
+      dispatch('resetOutliersAlphaToDefault');
+      dispatch('setHideOutliers', false);
     },
 
     loadDataset ({ commit, dispatch }, stringDataset) {
@@ -63,7 +84,7 @@ export default new Vuex.Store({
       const dataset = parseDataset1D(stringDataset);
       if (dataset != null) {
         commit('SET_DATASET', dataset);
-        dispatch('calculateStats');
+        dispatch('initializeStats');
         return true;
       }
 
@@ -97,13 +118,21 @@ export default new Vuex.Store({
     },
 
     updateKdeBandwidth ({ commit }, bandwidth) {
-      if (bandwidth <= 0) {
-        throw new Error('bandwidth must be greater than 0');
-      }
-
       commit('SET_KDE_BANDWIDTH', bandwidth);
-    }
+    },
 
+    resetOutliersAlphaToDefault ({ commit }) {
+      commit('SET_OUTLIERS_ALPHA', OUTLIERS_ALPHA_DEFAULT);
+    },
+
+    updateOutliersAlpha ({ commit }, newAlpha) {
+      commit('SET_OUTLIERS_ALPHA', newAlpha);
+    },
+
+    setHideOutliers ({ commit, dispatch }, newHideOutliers) {
+      commit('SET_HIDE_OUTLIERS', newHideOutliers);
+      dispatch('computeNonOutliersStats');
+    }
   },
 
   getters: {

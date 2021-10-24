@@ -23,6 +23,10 @@ export default {
       {
         name: 'Statistical characteristics',
         routeName: 'StatisticalCharacteristics'
+      },
+      {
+        name: 'Outliers',
+        routeName: 'Outliers'
       }
     ]
   }),

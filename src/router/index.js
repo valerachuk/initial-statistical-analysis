@@ -3,7 +3,8 @@ import VueRouter from 'vue-router';
 import {
   VariationSeriesEcdf,
   HistogramKde,
-  StatisticalCharacteristics
+  StatisticalCharacteristics,
+  Outliers
 } from '@views';
 
 Vue.use(VueRouter);
@@ -29,6 +30,11 @@ const routes = [
     path: '/statistical-characteristics',
     name: 'StatisticalCharacteristics',
     component: StatisticalCharacteristics
+  },
+  {
+    path: '/outliers',
+    name: 'Outliers',
+    component: Outliers
   }
 ];
 

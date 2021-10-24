@@ -12,6 +12,7 @@ module.exports = {
     config.resolve.alias
       .set('@components', path.resolve('src/components/'))
       .set('@views', path.resolve('src/views/'))
-      .set('@math-services', path.resolve('src/math-services/'));
+      .set('@math-services', path.resolve('src/math-services/'))
+      .set('@constants', path.resolve('src/constants.js'));
   }
 };
