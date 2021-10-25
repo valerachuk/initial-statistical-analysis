@@ -1,4 +1,9 @@
-import { IsaOutliersAlphaField, IsaOutliersPlot, IsaOutliersActivationCheckbox } from '@components';
+import {
+  IsaOutliersAlphaField,
+  IsaOutliersPlot,
+  IsaOutliersActivationCheckbox,
+  IsaOutliersTable
+} from '@components';
 
 export default {
   name: 'Outliers',
@@ -6,6 +11,7 @@ export default {
   components: {
     IsaOutliersAlphaField,
     IsaOutliersPlot,
-    IsaOutliersActivationCheckbox
+    IsaOutliersActivationCheckbox,
+    IsaOutliersTable
   }
 };

@@ -9,3 +9,4 @@ export { default as IsaKdeBandwidthField } from './isa-kde-bandwidth-field/isa-k
 export { default as IsaOutliersAlphaField } from './isa-outliers-alpha-field/isa-outliers-alpha-field.component.vue';
 export { default as IsaOutliersPlot } from './isa-outliers-plot/isa-outliers-plot.component.vue';
 export { default as IsaOutliersActivationCheckbox } from './isa-outliers-activation-checkbox/isa-outliers-activation-checkbox.component.vue';
+export { default as IsaOutliersTable } from './isa-outliers-table/isa-outliers-table.component.vue';
