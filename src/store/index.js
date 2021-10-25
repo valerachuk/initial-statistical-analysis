@@ -8,29 +8,27 @@ import {
   calculateOptimalBandwidth,
   defaultRound
 } from '@math-services';
-import { OUTLIERS_ALPHA_DEFAULT } from '@constants';
+import outliers from './outliers.store';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+
+  modules: {
+    outliers
+  },
+
   state: {
     dataset: null,
-    variationSeries: null,
-    variationSeriesClasses: null,
     variationSeriesClassCount: null,
-    kdeBandwidth: null,
-    outliersAlpha: null,
-    hideOutliers: false
+    kdeBandwidth: null
   },
 
   mutations: {
     CLEAR_STATE (state) {
       state.dataset = null;
-      state.variationSeries = null;
-      state.variationSeriesClasses = null;
       state.variationSeriesClassCount = null;
       state.kdeBandwidth = null;
-
       state.outliersAlpha = null;
       state.hideOutliers = false;
     },
@@ -39,40 +37,22 @@ export default new Vuex.Store({
       state.dataset = newDataset;
     },
 
-    SET_VARIATION_SERIES (state, newVariationSeries) {
-      state.variationSeries = newVariationSeries;
-    },
-
-    SET_VARIATION_SERIES_CLASSES_AND_COUNT (state, payload) {
-      state.variationSeriesClasses = payload.variationSeriesClasses;
-      state.variationSeriesClassCount = payload.classCount;
+    SET_VARIATION_SERIES_CLASS_COUNT (state, classCount) {
+      state.variationSeriesClassCount = classCount;
     },
 
     SET_KDE_BANDWIDTH (state, newKdeBandwidth) {
       state.kdeBandwidth = newKdeBandwidth;
-    },
-
-    SET_OUTLIERS_ALPHA (state, newAlpha) {
-      state.outliersAlpha = newAlpha;
-    },
-
-    SET_HIDE_OUTLIERS (state, newHideOutliers) {
-      state.hideOutliers = newHideOutliers;
     }
   },
 
   actions: {
-    computeNonOutliersStats ({ dispatch }) {
-      dispatch('calculateVariationSeries');
-      dispatch('calculateDefaultVariationSeriesClasses');
-      dispatch('calculateDefaultKdeBandwidth');
-    },
-
     initializeStats ({ dispatch }) {
-      dispatch('computeNonOutliersStats');
+      dispatch('calculateVariationSeriesOptimalClassCount');
+      dispatch('calculateOptimalKdeBandwidth');
 
-      dispatch('resetOutliersAlphaToDefault');
-      dispatch('setHideOutliers', false);
+      dispatch('outliers/resetOutliersAlphaToDefault');
+      dispatch('outliers/setHideOutliers', false);
     },
 
     loadDataset ({ commit, dispatch }, stringDataset) {
@@ -92,52 +72,40 @@ export default new Vuex.Store({
       return false;
     },
 
-    calculateVariationSeries ({ state, commit }) {
-      const variationSeries = calculateVariationSeries(state.dataset);
-      commit('SET_VARIATION_SERIES', variationSeries);
-    },
-
-    calculateDefaultVariationSeriesClasses ({ state, commit }) {
+    calculateVariationSeriesOptimalClassCount ({ state, commit }) {
       const classCount = calculateOptimalNumberOfClasses(state.dataset.length);
-      const variationSeriesClasses = calculateVariationSeriesClasses(state.dataset, classCount);
-      commit('SET_VARIATION_SERIES_CLASSES_AND_COUNT', { variationSeriesClasses, classCount });
+      commit('SET_VARIATION_SERIES_CLASS_COUNT', classCount);
     },
 
-    updateVariationSeriesClassCount ({ state, commit }, classCount) {
-      if (classCount < 1) {
-        throw new Error('classCount must not be less than 1');
-      }
-
-      const variationSeriesClasses = calculateVariationSeriesClasses(state.dataset, classCount);
-      commit('SET_VARIATION_SERIES_CLASSES_AND_COUNT', { variationSeriesClasses, classCount });
+    updateVariationSeriesClassCount ({ commit }, classCount) {
+      commit('SET_VARIATION_SERIES_CLASS_COUNT', classCount);
     },
 
-    calculateDefaultKdeBandwidth ({ state, commit }) {
+    calculateOptimalKdeBandwidth ({ state, commit }) {
       const bandwidth = calculateOptimalBandwidth(state.dataset);
       commit('SET_KDE_BANDWIDTH', defaultRound(bandwidth));
     },
 
     updateKdeBandwidth ({ commit }, bandwidth) {
       commit('SET_KDE_BANDWIDTH', bandwidth);
-    },
-
-    resetOutliersAlphaToDefault ({ commit }) {
-      commit('SET_OUTLIERS_ALPHA', OUTLIERS_ALPHA_DEFAULT);
-    },
-
-    updateOutliersAlpha ({ commit }, newAlpha) {
-      commit('SET_OUTLIERS_ALPHA', newAlpha);
-    },
-
-    setHideOutliers ({ commit, dispatch }, newHideOutliers) {
-      commit('SET_HIDE_OUTLIERS', newHideOutliers);
-      dispatch('computeNonOutliersStats');
     }
   },
 
   getters: {
     isValidDatasetLoaded (state) {
       return state.dataset != null;
+    },
+
+    variationSeries (_, getters) {
+      return calculateVariationSeries(getters.datasetNoOutliers);
+    },
+
+    variationSeriesClasses (state, getters) {
+      return calculateVariationSeriesClasses(getters.datasetNoOutliers, state.variationSeriesClassCount);
+    },
+
+    datasetNoOutliers (_, getters) {
+      return getters['outliers/datasetNoOutliers'];
     }
   }
 });

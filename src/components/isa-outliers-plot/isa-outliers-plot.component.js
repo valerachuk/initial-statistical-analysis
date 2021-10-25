@@ -1,6 +1,6 @@
 import { Plotly } from 'vue-plotly';
-import { mapState } from 'vuex';
-import { mean, normStdDistributionInv, standardDeviation, defaultRound } from '@math-services';
+import { mapState, mapGetters } from 'vuex';
+import { defaultRound } from '@math-services';
 
 export default {
   name: 'IsaOutliersPlot',
@@ -18,7 +18,7 @@ export default {
         t: 15
       },
       xaxis: {
-        title: 'Element number'
+        title: 'Element index'
       },
       yaxis: {
         title: 'x'
@@ -29,65 +29,26 @@ export default {
   }),
 
   computed: {
-    ...mapState([
-      'dataset',
+    ...mapState('outliers', [
       'outliersAlpha'
     ]),
 
-    datasetMean () {
-      return mean(this.dataset);
-    },
-
-    datasetNormStdInv () {
-      return normStdDistributionInv(1 - this.outliersAlpha / 2);
-    },
-
-    datasetStandardDeviation () {
-      return standardDeviation(this.dataset);
-    },
-
-    outliersLowerBound () {
-      return this.datasetMean - this.datasetNormStdInv * this.datasetStandardDeviation;
-    },
-
-    outliersUpperBound () {
-      return this.datasetMean + this.datasetNormStdInv * this.datasetStandardDeviation;
-    },
+    ...mapGetters('outliers', [
+      'datasetNormStdInv',
+      'lowerBound',
+      'upperBound',
+      'numbersInRangeWithIndexes',
+      'numbersOutOfRangeWithIndexes'
+    ]),
 
     datasetInRange () {
-      const numbersOfSelectedElements = [];
-
-      const numbersInRange = this.dataset.filter((x, index) => {
-        if (!this.numberInBoundsPredicate(x)) {
-          return false;
-        }
-
-        numbersOfSelectedElements.push(index);
-        return true;
-      });
-
-      return {
-        x: numbersOfSelectedElements,
-        y: numbersInRange
-      };
+      const { indexes: x, numbers: y } = this.numbersInRangeWithIndexes;
+      return { x, y };
     },
 
     datasetOutOfRange () {
-      const numbersOfSelectedElements = [];
-
-      const numbersInRange = this.dataset.filter((x, index) => {
-        if (this.numberInBoundsPredicate(x)) {
-          return false;
-        }
-
-        numbersOfSelectedElements.push(index);
-        return true;
-      });
-
-      return {
-        x: numbersOfSelectedElements,
-        y: numbersInRange
-      };
+      const { indexes: x, numbers: y } = this.numbersOutOfRangeWithIndexes;
+      return { x, y };
     },
 
     plotlyData () {
@@ -108,7 +69,7 @@ export default {
         },
         {
           x: [-Number.MAX_VALUE, Number.MAX_VALUE],
-          y: [this.outliersLowerBound, this.outliersLowerBound],
+          y: [this.lowerBound, this.lowerBound],
           type: 'scatter',
           mode: 'lines',
           name: 'Lower bound',
@@ -116,19 +77,13 @@ export default {
         },
         {
           x: [-Number.MAX_VALUE, Number.MAX_VALUE],
-          y: [this.outliersUpperBound, this.outliersUpperBound],
+          y: [this.upperBound, this.upperBound],
           type: 'scatter',
           mode: 'lines',
           name: 'Upper bound',
           line: { color: 'black' }
         }
       ];
-    }
-  },
-
-  methods: {
-    numberInBoundsPredicate (number) {
-      return number >= this.outliersLowerBound && number <= this.outliersUpperBound;
     }
   }
 

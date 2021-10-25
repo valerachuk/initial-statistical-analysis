@@ -1,4 +1,4 @@
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 import { defaultRound, sum } from '@math-services';
 
 export default {
@@ -35,7 +35,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['variationSeries']),
+    ...mapGetters(['variationSeries']),
 
     variationSeriesReadable () {
       return this.variationSeries.map(series => {

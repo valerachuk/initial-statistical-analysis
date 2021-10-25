@@ -1,4 +1,4 @@
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 import {
   mean,
   median,
@@ -94,7 +94,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['dataset']),
+    ...mapGetters(['datasetNoOutliers']),
 
     statisticalCharacteristics () {
       function formatConfidenceInterval (interval) {
@@ -110,9 +110,9 @@ export default {
         } = statFunctions;
 
         return {
-          value: valueFunction == null ? '-' : defaultRound(valueFunction(this.dataset)),
-          standardDeviation: standardDeviationFunction == null ? '-' : defaultRound(standardDeviationFunction(this.dataset)),
-          confidenceInterval95: confidenceInterval95Function == null ? '-' : formatConfidenceInterval(confidenceInterval95Function(this.dataset)),
+          value: valueFunction == null ? '-' : defaultRound(valueFunction(this.datasetNoOutliers)),
+          standardDeviation: standardDeviationFunction == null ? '-' : defaultRound(standardDeviationFunction(this.datasetNoOutliers)),
+          confidenceInterval95: confidenceInterval95Function == null ? '-' : formatConfidenceInterval(confidenceInterval95Function(this.datasetNoOutliers)),
           ...rest
         };
       });

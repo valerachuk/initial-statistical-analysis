@@ -1,5 +1,5 @@
 import { Plotly } from 'vue-plotly';
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'IsaEcdfPlot',
@@ -27,7 +27,7 @@ export default {
   }),
 
   computed: {
-    ...mapState(['variationSeries']),
+    ...mapGetters(['variationSeries']),
 
     plotlyData () {
       return [{

@@ -4,7 +4,7 @@ export default {
   name: 'IsaOutliersActivationCheckbox',
 
   computed: {
-    ...mapState(['hideOutliers']),
+    ...mapState('outliers', ['hideOutliers']),
 
     hideOutliersCheckbox: {
       get () {
@@ -25,6 +25,6 @@ export default {
   },
 
   methods: {
-    ...mapActions(['setHideOutliers'])
+    ...mapActions('outliers', ['setHideOutliers'])
   }
 };

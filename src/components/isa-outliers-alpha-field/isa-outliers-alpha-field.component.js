@@ -9,11 +9,17 @@ export default {
   }),
 
   computed: {
-    ...mapState(['outliersAlpha', 'hideOutliers'])
+    ...mapState('outliers', [
+      'outliersAlpha',
+      'hideOutliers'
+    ])
   },
 
   methods: {
-    ...mapActions(['updateOutliersAlpha', 'resetOutliersAlphaToDefault']),
+    ...mapActions('outliers', [
+      'updateOutliersAlpha',
+      'resetOutliersAlphaToDefault'
+    ]),
 
     validateAndUpdateOutliersAlpha (newAlpha) {
       const alphaNumber = +newAlpha;
