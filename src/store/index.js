@@ -8,14 +8,18 @@ import {
   calculateOptimalBandwidth,
   defaultRound
 } from '@math-services';
+import outliers from './outliers.store';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+
+  modules: {
+    outliers
+  },
+
   state: {
     dataset: null,
-    variationSeries: null,
-    variationSeriesClasses: null,
     variationSeriesClassCount: null,
     kdeBandwidth: null
   },
@@ -23,23 +27,18 @@ export default new Vuex.Store({
   mutations: {
     CLEAR_STATE (state) {
       state.dataset = null;
-      state.variationSeries = null;
-      state.variationSeriesClasses = null;
       state.variationSeriesClassCount = null;
       state.kdeBandwidth = null;
+      state.outliersAlpha = null;
+      state.hideOutliers = false;
     },
 
     SET_DATASET (state, newDataset) {
       state.dataset = newDataset;
     },
 
-    SET_VARIATION_SERIES (state, newVariationSeries) {
-      state.variationSeries = newVariationSeries;
-    },
-
-    SET_VARIATION_SERIES_CLASSES_AND_COUNT (state, payload) {
-      state.variationSeriesClasses = payload.variationSeriesClasses;
-      state.variationSeriesClassCount = payload.classCount;
+    SET_VARIATION_SERIES_CLASS_COUNT (state, classCount) {
+      state.variationSeriesClassCount = classCount;
     },
 
     SET_KDE_BANDWIDTH (state, newKdeBandwidth) {
@@ -48,10 +47,12 @@ export default new Vuex.Store({
   },
 
   actions: {
-    calculateStats ({ dispatch }) {
-      dispatch('calculateVariationSeries');
-      dispatch('calculateDefaultVariationSeriesClasses');
-      dispatch('calculateDefaultKdeBandwidth');
+    initializeStats ({ dispatch }) {
+      dispatch('calculateVariationSeriesOptimalClassCount');
+      dispatch('calculateOptimalKdeBandwidth');
+
+      dispatch('outliers/resetOutliersAlphaToDefault');
+      dispatch('outliers/setHideOutliers', false);
     },
 
     loadDataset ({ commit, dispatch }, stringDataset) {
@@ -63,7 +64,7 @@ export default new Vuex.Store({
       const dataset = parseDataset1D(stringDataset);
       if (dataset != null) {
         commit('SET_DATASET', dataset);
-        dispatch('calculateStats');
+        dispatch('initializeStats');
         return true;
       }
 
@@ -71,44 +72,40 @@ export default new Vuex.Store({
       return false;
     },
 
-    calculateVariationSeries ({ state, commit }) {
-      const variationSeries = calculateVariationSeries(state.dataset);
-      commit('SET_VARIATION_SERIES', variationSeries);
-    },
-
-    calculateDefaultVariationSeriesClasses ({ state, commit }) {
+    calculateVariationSeriesOptimalClassCount ({ state, commit }) {
       const classCount = calculateOptimalNumberOfClasses(state.dataset.length);
-      const variationSeriesClasses = calculateVariationSeriesClasses(state.dataset, classCount);
-      commit('SET_VARIATION_SERIES_CLASSES_AND_COUNT', { variationSeriesClasses, classCount });
+      commit('SET_VARIATION_SERIES_CLASS_COUNT', classCount);
     },
 
-    updateVariationSeriesClassCount ({ state, commit }, classCount) {
-      if (classCount < 1) {
-        throw new Error('classCount must not be less than 1');
-      }
-
-      const variationSeriesClasses = calculateVariationSeriesClasses(state.dataset, classCount);
-      commit('SET_VARIATION_SERIES_CLASSES_AND_COUNT', { variationSeriesClasses, classCount });
+    updateVariationSeriesClassCount ({ commit }, classCount) {
+      commit('SET_VARIATION_SERIES_CLASS_COUNT', classCount);
     },
 
-    calculateDefaultKdeBandwidth ({ state, commit }) {
+    calculateOptimalKdeBandwidth ({ state, commit }) {
       const bandwidth = calculateOptimalBandwidth(state.dataset);
       commit('SET_KDE_BANDWIDTH', defaultRound(bandwidth));
     },
 
     updateKdeBandwidth ({ commit }, bandwidth) {
-      if (bandwidth <= 0) {
-        throw new Error('bandwidth must be greater than 0');
-      }
-
       commit('SET_KDE_BANDWIDTH', bandwidth);
     }
-
   },
 
   getters: {
     isValidDatasetLoaded (state) {
       return state.dataset != null;
+    },
+
+    variationSeries (_, getters) {
+      return calculateVariationSeries(getters.datasetNoOutliers);
+    },
+
+    variationSeriesClasses (state, getters) {
+      return calculateVariationSeriesClasses(getters.datasetNoOutliers, state.variationSeriesClassCount);
+    },
+
+    datasetNoOutliers (_, getters) {
+      return getters['outliers/datasetNoOutliers'];
     }
   }
 });

@@ -6,3 +6,7 @@ export { default as IsaHistogramKdePlot } from './isa-histogram-kde-plot/isa-his
 export { default as IsaHistogramClassCountField } from './isa-histogram-class-count-field/isa-histogram-class-count-field.component.vue';
 export { default as IsaVariationSeriesClassesTable } from './isa-variation-series-classes-table/isa-variation-series-classes-table.component.vue';
 export { default as IsaKdeBandwidthField } from './isa-kde-bandwidth-field/isa-kde-bandwidth-field.component.vue';
+export { default as IsaOutliersAlphaField } from './isa-outliers-alpha-field/isa-outliers-alpha-field.component.vue';
+export { default as IsaOutliersPlot } from './isa-outliers-plot/isa-outliers-plot.component.vue';
+export { default as IsaOutliersActivationCheckbox } from './isa-outliers-activation-checkbox/isa-outliers-activation-checkbox.component.vue';
+export { default as IsaOutliersTable } from './isa-outliers-table/isa-outliers-table.component.vue';

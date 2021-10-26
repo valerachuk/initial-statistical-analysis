@@ -1,4 +1,4 @@
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'IsaHistogramClassCountField',
@@ -8,11 +8,12 @@ export default {
   }),
 
   computed: {
-    ...mapState(['variationSeriesClassCount', 'variationSeries'])
+    ...mapState(['variationSeriesClassCount']),
+    ...mapGetters(['datasetNoOutliers'])
   },
 
   methods: {
-    ...mapActions(['updateVariationSeriesClassCount', 'calculateDefaultVariationSeriesClasses']),
+    ...mapActions(['updateVariationSeriesClassCount', 'calculateVariationSeriesOptimalClassCount']),
 
     updateClassCount (value) {
       const number = +value;
@@ -20,18 +21,18 @@ export default {
       if (isFinite(number) &&
         Number.isInteger(number) &&
         number >= 1 &&
-        number <= this.variationSeries.length
+        number <= this.datasetNoOutliers.length
       ) {
         this.updateVariationSeriesClassCount(number);
         this.classCountErrorMessage = '';
         return;
       }
 
-      this.classCountErrorMessage = `Class count must be integer in [1, ${this.variationSeries.length}] range`;
+      this.classCountErrorMessage = `Class count must be integer in [1, ${this.datasetNoOutliers.length}] range`;
     },
 
     resetClassCount () {
-      this.calculateDefaultVariationSeriesClasses();
+      this.calculateVariationSeriesOptimalClassCount();
       this.classCountErrorMessage = '';
     }
   }

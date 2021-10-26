@@ -12,7 +12,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['updateKdeBandwidth', 'calculateDefaultKdeBandwidth']),
+    ...mapActions(['updateKdeBandwidth', 'calculateOptimalKdeBandwidth']),
 
     updateBandwidth (value) {
       const number = +value;
@@ -27,7 +27,7 @@ export default {
     },
 
     resetKdeBandwidth () {
-      this.calculateDefaultKdeBandwidth();
+      this.calculateOptimalKdeBandwidth();
       this.kdeBandwidthErrorMessage = '';
     }
   }

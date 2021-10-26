@@ -1,0 +1,1 @@
+export const OUTLIERS_ALPHA_DEFAULT = 0.01;

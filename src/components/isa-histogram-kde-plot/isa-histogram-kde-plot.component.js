@@ -1,5 +1,5 @@
 import { Plotly } from 'vue-plotly';
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { createKernelDensityEstimation } from '@math-services';
 
 const KDE_PLOT_RESOLUTION = 50;
@@ -31,10 +31,13 @@ export default {
 
   computed: {
     ...mapState([
-      'variationSeriesClasses',
       'variationSeriesClassCount',
-      'dataset',
       'kdeBandwidth'
+    ]),
+
+    ...mapGetters([
+      'datasetNoOutliers',
+      'variationSeriesClasses'
     ]),
 
     histogramToPlotlyScatter () {
@@ -60,26 +63,24 @@ export default {
     },
 
     kdeToPlotlyScatter () {
-      const lowerBoundX = Math.min(...this.dataset);
-      const upperBoundX = Math.max(...this.dataset);
+      const lowerBoundX = Math.min(...this.datasetNoOutliers);
+      const upperBoundX = Math.max(...this.datasetNoOutliers);
       const range = upperBoundX - lowerBoundX;
+      const histogramClassWidth = range / this.variationSeriesClassCount; // h
 
       const resolutionStep = range / KDE_PLOT_RESOLUTION;
-      const kernelDensityEstimation = createKernelDensityEstimation(this.dataset, this.kdeBandwidth);
+      const kernelDensityEstimation = createKernelDensityEstimation(this.datasetNoOutliers, this.kdeBandwidth);
 
       const xAxis = [];
       const yAxis = [];
 
       for (let i = 0; i <= KDE_PLOT_RESOLUTION; i++) {
-        const histogramClassWidth = range / this.variationSeriesClassCount; // h
         const x = lowerBoundX + resolutionStep * i;
         const y = kernelDensityEstimation(x) * histogramClassWidth;
 
         xAxis.push(x);
         yAxis.push(y);
       }
-
-      console.log({ xAxis, yAxis });
 
       return {
         x: xAxis,
