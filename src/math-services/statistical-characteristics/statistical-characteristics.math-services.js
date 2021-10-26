@@ -8,12 +8,15 @@ export function mean (numbers) {
 
 export function median (numbers) {
   const numbersLength = numbers.length;
+  const numbersSorted = numbers
+    .concat()
+    .sort((a, b) => a - b);
 
   if (numbersLength % 2 === 0) {
-    return (numbers[numbersLength / 2] + numbers[numbersLength / 2 + 1]) / 2;
+    return (numbersSorted[numbersLength / 2] + numbersSorted[numbersLength / 2 + 1]) / 2;
   }
 
-  return numbers[(numbersLength + 1) / 2];
+  return numbersSorted[(numbersLength + 1) / 2];
 }
 
 export function variance (numbers) {
