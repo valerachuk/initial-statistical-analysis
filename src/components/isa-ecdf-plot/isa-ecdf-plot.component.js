@@ -31,8 +31,8 @@ export default {
 
     plotlyData () {
       return [{
-        x: this.variationSeries?.map(x => x.value) ?? [],
-        y: this.variationSeries?.map(x => x.ecdfValue) ?? [],
+        x: this.variationSeries.map(x => x.value),
+        y: this.variationSeries.map(x => x.ecdfValue),
         type: 'scatter',
         mode: 'lines+markers',
         line: { shape: 'hv' }

@@ -10,3 +10,7 @@ export { default as IsaOutliersAlphaField } from './isa-outliers-alpha-field/isa
 export { default as IsaOutliersPlot } from './isa-outliers-plot/isa-outliers-plot.component.vue';
 export { default as IsaOutliersActivationCheckbox } from './isa-outliers-activation-checkbox/isa-outliers-activation-checkbox.component.vue';
 export { default as IsaOutliersTable } from './isa-outliers-table/isa-outliers-table.component.vue';
+export { default as IsaLaplaceProbabilityFunctionParameters } from './isa-laplace-probability-function-parameters/isa-laplace-probability-function-parameters.component.vue';
+export { default as IsaHistogramKdeReconstructedDensityPlot } from './isa-histogram-kde-reconstructed-density-plot/isa-histogram-kde-reconstructed-density-plot.component.vue';
+export { default as IsaEcdfRecoveredCdfPlot } from './isa-ecdf-recovered-cdf-plot/isa-ecdf-recovered-cdf-plot.component.vue';
+export { default as IsaLaplaceProbabilityPaper } from './isa-laplace-probability-paper/isa-laplace-probability-paper.component.vue';

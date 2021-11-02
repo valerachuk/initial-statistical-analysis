@@ -1,10 +1,15 @@
 import { Plotly } from 'vue-plotly';
 import { mapState, mapGetters } from 'vuex';
-import { createKernelDensityEstimation } from '@math-services';
+import {
+  computeLaplaceMu,
+  computeLaplaceLambda,
+  createKernelDensityEstimation,
+  createLaplaceProbabilityDensityFunction
+} from '@math-services';
 import { PLOT_RESOLUTION_DEFAULT } from '@constants';
 
 export default {
-  name: 'IsaHistogramKdePlot',
+  name: 'IsaHistogramKdeReconstructedDensityPlot',
 
   components: {
     Plotly
@@ -87,6 +92,32 @@ export default {
       };
     },
 
+    recoveredDensityToPlotlyScatter () {
+      const lowerBoundX = Math.min(...this.datasetNoOutliers);
+      const upperBoundX = Math.max(...this.datasetNoOutliers);
+      const range = upperBoundX - lowerBoundX;
+      const histogramClassWidth = range / this.variationSeriesClassCount; // h
+
+      const resolutionStep = range / PLOT_RESOLUTION_DEFAULT;
+      const laplaceProbabilityDensityFunction = createLaplaceProbabilityDensityFunction(computeLaplaceLambda(this.datasetNoOutliers), computeLaplaceMu(this.datasetNoOutliers));
+
+      const xAxis = [];
+      const yAxis = [];
+
+      for (let i = 0; i <= PLOT_RESOLUTION_DEFAULT; i++) {
+        const x = lowerBoundX + resolutionStep * i;
+        const y = laplaceProbabilityDensityFunction(x) * histogramClassWidth;
+
+        xAxis.push(x);
+        yAxis.push(y);
+      }
+
+      return {
+        x: xAxis,
+        y: yAxis
+      };
+    },
+
     plotlyData () {
       return [
         {
@@ -101,6 +132,12 @@ export default {
           type: 'scatter',
           line: { shape: 'spline' },
           name: 'KDE'
+        },
+        {
+          ...this.recoveredDensityToPlotlyScatter,
+          type: 'scatter',
+          line: { shape: 'spline' },
+          name: 'Recovered density'
         }
       ];
     }

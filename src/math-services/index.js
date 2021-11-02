@@ -17,7 +17,7 @@ export {
   coefficientOfAntikurtosis
 } from './statistical-characteristics/statistical-characteristics.math-services';
 export { createKernelDensityEstimation, calculateOptimalBandwidth } from './kde.math-service';
-export { normStdDistributionInv, studentDistributionInv } from './statistical-characteristics/quantiles.math-service';
+export { normStdDistributionInv, studentDistributionInv } from './quantiles.math-service';
 export {
   standardDeviationMean,
   standardDeviationStandardDeviation,
@@ -31,3 +31,14 @@ export {
   confidenceIntervalCoefficientOfSkewness,
   confidenceIntervalCoefficientKurtosis
 } from './statistical-characteristics/confidence-intervals.math-service';
+export {
+  createLaplaceProbabilityFunction,
+  createLaplaceProbabilityDensityFunction,
+  computeLaplaceMu,
+  computeLaplaceLambda,
+  computeLaplaceMuStandardDeviation,
+  computeLaplaceLambdaStandardDeviation,
+  computeLaplaceMuConfidenceInterval,
+  computeLaplaceLambdaConfidenceInterval,
+  createEcdfToProbabilityPaper
+} from './laplace-distribution.math-services';

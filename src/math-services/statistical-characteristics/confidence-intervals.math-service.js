@@ -1,3 +1,4 @@
+import { QUANTILE_APLPHA_DEFAULT } from '@constants';
 import {
   normStdDistributionInv,
   studentDistributionInv,
@@ -13,10 +14,8 @@ import {
   standardDeviationCoefficientOfKurtosis
 } from '@math-services';
 
-const APLPHA = 0.05;
-
 function confidenceIntervalDefault (numbers, valueFunction, standardDeviationFunction) {
-  const range = studentDistributionInv(1 - APLPHA, numbers.length - 1) * standardDeviationFunction(numbers);
+  const range = studentDistributionInv(1 - QUANTILE_APLPHA_DEFAULT / 2, numbers.length - 1) * standardDeviationFunction(numbers);
   const value = valueFunction(numbers);
   return [value - range, value + range];
 }
@@ -27,7 +26,7 @@ export function confidenceIntervalMean (numbers) {
 
 export function confidenceIntervalMedian (numbers) {
   const numbersLength = numbers.length;
-  const range = normStdDistributionInv(1 - APLPHA / 2) * Math.sqrt(numbersLength) / 2;
+  const range = normStdDistributionInv(1 - QUANTILE_APLPHA_DEFAULT / 2) * Math.sqrt(numbersLength) / 2;
 
   const j = Math.round(numbersLength / 2 - range);
   const k = Math.round(numbersLength / 2 + range);
