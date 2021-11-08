@@ -14,10 +14,15 @@ export {
   coefficientOfVariation,
   coefficientOfSkewness,
   coefficientOfKurtosis,
-  coefficientOfAntikurtosis
+  coefficientOfAntikurtosis,
+  pearsonsChiSquaredTestStatistics
 } from './statistical-characteristics/statistical-characteristics.math-services';
 export { createKernelDensityEstimation, calculateOptimalBandwidth } from './kde.math-service';
-export { normStdDistributionInv, studentDistributionInv } from './quantiles.math-service';
+export {
+  normStdDistributionInv,
+  studentDistributionInv,
+  pearsonDistributionInv
+} from './quantiles.math-service';
 export {
   standardDeviationMean,
   standardDeviationStandardDeviation,
@@ -40,5 +45,6 @@ export {
   computeLaplaceLambdaStandardDeviation,
   computeLaplaceMuConfidenceInterval,
   computeLaplaceLambdaConfidenceInterval,
-  createEcdfToProbabilityPaper
+  createEcdfToProbabilityPaper,
+  ecdfToProbabilityPaper
 } from './laplace-distribution.math-services';

@@ -4,7 +4,8 @@ import {
   IsaEcdfRecoveredCdfPlot,
   IsaLaplaceProbabilityPaper,
   IsaHistogramClassCountField,
-  IsaKdeBandwidthField
+  IsaKdeBandwidthField,
+  IsaPearsonsChiSquaredTest
 } from '@components';
 
 export default {
@@ -16,6 +17,7 @@ export default {
     IsaEcdfRecoveredCdfPlot,
     IsaLaplaceProbabilityPaper,
     IsaHistogramClassCountField,
-    IsaKdeBandwidthField
+    IsaKdeBandwidthField,
+    IsaPearsonsChiSquaredTest
   }
 };

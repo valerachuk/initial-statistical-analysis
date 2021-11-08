@@ -14,3 +14,4 @@ export { default as IsaLaplaceProbabilityFunctionParameters } from './isa-laplac
 export { default as IsaHistogramKdeRecoveredDensityPlot } from './isa-histogram-kde-recovered-density-plot/isa-histogram-kde-recovered-density-plot.component.vue';
 export { default as IsaEcdfRecoveredCdfPlot } from './isa-ecdf-recovered-cdf-plot/isa-ecdf-recovered-cdf-plot.component.vue';
 export { default as IsaLaplaceProbabilityPaper } from './isa-laplace-probability-paper/isa-laplace-probability-paper.component.vue';
+export { default as IsaPearsonsChiSquaredTest } from './isa-pearsons-chi-squared-test/isa-pearsons-chi-squared-test.component.vue';

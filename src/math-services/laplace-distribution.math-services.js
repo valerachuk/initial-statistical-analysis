@@ -55,7 +55,7 @@ export function computeLaplaceLambdaConfidenceInterval (dataset) {
   return [laplaceLambda - range, laplaceLambda + range];
 }
 
-function ecdfToProbabilityPaper (x, Fx, mu) {
+export function ecdfToProbabilityPaper (x, Fx, mu) {
   if (x <= mu) {
     return Math.log(2 * Fx);
   }

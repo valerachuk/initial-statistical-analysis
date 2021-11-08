@@ -1,6 +1,13 @@
 import { Plotly } from 'vue-plotly';
 import { mapGetters } from 'vuex';
-import { createEcdfToProbabilityPaper } from '@math-services';
+import {
+  createEcdfToProbabilityPaper,
+  createLaplaceProbabilityFunction,
+  computeLaplaceLambda,
+  computeLaplaceMu,
+  ecdfToProbabilityPaper
+} from '@math-services';
+import { PLOT_RESOLUTION_DEFAULT } from '@constants';
 
 export default {
   name: 'IsaLaplaceProbabilityPaper',
@@ -41,13 +48,45 @@ export default {
       };
     },
 
+    recoveredProbabilityToProbabilityPaper () {
+      const lowerBoundX = Math.min(...this.datasetNoOutliers);
+      const upperBoundX = Math.max(...this.datasetNoOutliers);
+      const range = upperBoundX - lowerBoundX;
+
+      const resolutionStep = range / PLOT_RESOLUTION_DEFAULT;
+      const laplaceMu = computeLaplaceMu(this.datasetNoOutliers);
+      const laplaceProbabilityFunction = createLaplaceProbabilityFunction(computeLaplaceLambda(this.datasetNoOutliers), laplaceMu);
+
+      const xAxis = [];
+      const yAxis = [];
+
+      for (let i = 0; i <= PLOT_RESOLUTION_DEFAULT; i++) {
+        const x = lowerBoundX + resolutionStep * i;
+        const y = ecdfToProbabilityPaper(x, laplaceProbabilityFunction(x), laplaceMu);
+
+        xAxis.push(x);
+        yAxis.push(y);
+      }
+
+      return {
+        x: xAxis,
+        y: yAxis
+      };
+    },
+
     plotlyData () {
-      return [{
-        ...this.variationSeriesToProbabilityPaper,
-        type: 'scatter',
-        mode: 'markers',
-        name: 'ECDF'
-      }];
+      return [
+        {
+          ...this.variationSeriesToProbabilityPaper,
+          type: 'scatter',
+          mode: 'markers',
+          name: 'ECDF'
+        }, {
+          ...this.recoveredProbabilityToProbabilityPaper,
+          type: 'scatter',
+          name: 'Recovered CDF'
+        }
+      ];
     }
 
   }
