@@ -1,8 +1,10 @@
 import {
   IsaLaplaceProbabilityFunctionParameters,
-  IsaHistogramKdeReconstructedDensityPlot,
+  IsaHistogramKdeRecoveredDensityPlot,
   IsaEcdfRecoveredCdfPlot,
-  IsaLaplaceProbabilityPaper
+  IsaLaplaceProbabilityPaper,
+  IsaHistogramClassCountField,
+  IsaKdeBandwidthField
 } from '@components';
 
 export default {
@@ -10,8 +12,10 @@ export default {
 
   components: {
     IsaLaplaceProbabilityFunctionParameters,
-    IsaHistogramKdeReconstructedDensityPlot,
+    IsaHistogramKdeRecoveredDensityPlot,
     IsaEcdfRecoveredCdfPlot,
-    IsaLaplaceProbabilityPaper
+    IsaLaplaceProbabilityPaper,
+    IsaHistogramClassCountField,
+    IsaKdeBandwidthField
   }
 };

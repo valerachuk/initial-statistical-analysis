@@ -9,7 +9,7 @@ import {
 import { PLOT_RESOLUTION_DEFAULT } from '@constants';
 
 export default {
-  name: 'IsaHistogramKdeReconstructedDensityPlot',
+  name: 'IsaHistogramKdeRecoveredDensityPlot',
 
   components: {
     Plotly
@@ -99,17 +99,35 @@ export default {
       const histogramClassWidth = range / this.variationSeriesClassCount; // h
 
       const resolutionStep = range / PLOT_RESOLUTION_DEFAULT;
-      const laplaceProbabilityDensityFunction = createLaplaceProbabilityDensityFunction(computeLaplaceLambda(this.datasetNoOutliers), computeLaplaceMu(this.datasetNoOutliers));
+
+      const laplaceMu = computeLaplaceMu(this.datasetNoOutliers);
+      const laplaceLambda = computeLaplaceLambda(this.datasetNoOutliers);
+      const laplaceProbabilityDensityFunction = createLaplaceProbabilityDensityFunction(laplaceLambda, laplaceMu);
 
       const xAxis = [];
       const yAxis = [];
 
+      function plotFunction (x) {
+        return laplaceProbabilityDensityFunction(x) * histogramClassWidth;
+      }
+
       for (let i = 0; i <= PLOT_RESOLUTION_DEFAULT; i++) {
         const x = lowerBoundX + resolutionStep * i;
-        const y = laplaceProbabilityDensityFunction(x) * histogramClassWidth;
+        const y = plotFunction(x);
 
         xAxis.push(x);
         yAxis.push(y);
+      }
+
+      // Insert mu
+      for (let i = 0; i < xAxis.length; i++) {
+        if (xAxis[i] <= laplaceMu) {
+          continue;
+        }
+
+        xAxis.splice(i, 0, laplaceMu);
+        yAxis.splice(i, 0, plotFunction(laplaceMu));
+        break;
       }
 
       return {

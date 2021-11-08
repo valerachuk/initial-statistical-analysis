@@ -45,7 +45,8 @@ export default {
       return [{
         ...this.variationSeriesToProbabilityPaper,
         type: 'scatter',
-        mode: 'markers'
+        mode: 'markers',
+        name: 'ECDF'
       }];
     }
 
