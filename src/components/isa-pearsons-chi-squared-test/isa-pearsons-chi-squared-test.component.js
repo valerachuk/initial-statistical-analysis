@@ -5,7 +5,8 @@ import {
   computeLaplaceLambda,
   computeLaplaceMu,
   pearsonDistributionInv,
-  pearsonsChiSquaredTestStatistics
+  pearsonsChiSquaredTestStatistics,
+  defaultRound
 } from '@math-services';
 import { QUANTILE_APLPHA_DEFAULT } from '@constants';
 
@@ -32,7 +33,8 @@ export default {
       }
       // height: 900
     },
-    QUANTILE_APLPHA_DEFAULT
+    QUANTILE_APLPHA_DEFAULT,
+    defaultRound
   }),
 
   computed: {
