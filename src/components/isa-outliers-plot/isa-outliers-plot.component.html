@@ -3,19 +3,20 @@
     :data="plotlyData"
     :layout="plotlyLayout"
     :display-mode-bar="true"
-    class="mb-3"
   />
-  <hr class="mb-3" />
 
-  <p>
-    Lower bound = <strong>{{defaultRound(lowerBound)}}</strong>
-  </p>
-  <p>
-    Upper bound = <strong>{{defaultRound(upperBound)}}</strong>
-  </p>
-  <p>
-   Normal standard distribution quantile = u (1 - <strong>{{outliersAlpha}}</strong> / 2)
-   = <strong>{{defaultRound(datasetNormStdInv)}}</strong>
-  </p>
+  <v-divider class="my-4" />
 
+  <div class="text-body-1">
+    <p>
+      Lower bound = <strong>{{defaultRound(lowerBound)}}</strong>
+    </p>
+    <p>
+      Upper bound = <strong>{{defaultRound(upperBound)}}</strong>
+    </p>
+    <p>
+     Normal standard distribution quantile = u (1 - <strong>{{outliersAlpha}}</strong> / 2)
+     = <strong>{{defaultRound(datasetNormStdInv)}}</strong>
+    </p>
+  </div>
 </div>

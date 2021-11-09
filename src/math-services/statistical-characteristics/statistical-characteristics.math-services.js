@@ -1,3 +1,5 @@
+import { createLaplaceProbabilityFunction, computeLaplaceLambda, computeLaplaceMu } from '@math-services';
+
 export function sum (numbers) {
   return numbers.reduce((acc, x) => acc + x, 0);
 }
@@ -56,4 +58,16 @@ export function coefficientOfKurtosis (numbers) {
 
 export function coefficientOfAntikurtosis (numbers) {
   return 1 / Math.sqrt(coefficientOfKurtosis(numbers) + 3);
+}
+
+export function pearsonsChiSquaredTestStatistics (variationSeriesClasses, dataset) {
+  const datasetLength = dataset.length;
+  const laplaceProbabilityFunction = createLaplaceProbabilityFunction(computeLaplaceLambda(dataset), computeLaplaceMu(dataset));
+
+  const toSum = variationSeriesClasses.map(({ frequency, lowerBound, upperBound }) => {
+    const theoreticalFrequency = datasetLength * (laplaceProbabilityFunction(upperBound) - laplaceProbabilityFunction(lowerBound));
+    return (frequency - theoreticalFrequency) ** 2 / frequency;
+  });
+
+  return sum(toSum);
 }

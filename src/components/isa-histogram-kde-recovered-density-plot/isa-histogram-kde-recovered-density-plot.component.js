@@ -1,10 +1,15 @@
 import { Plotly } from 'vue-plotly';
 import { mapState, mapGetters } from 'vuex';
-import { createKernelDensityEstimation } from '@math-services';
+import {
+  computeLaplaceMu,
+  computeLaplaceLambda,
+  createKernelDensityEstimation,
+  createLaplaceProbabilityDensityFunction
+} from '@math-services';
 import { PLOT_RESOLUTION_DEFAULT } from '@constants';
 
 export default {
-  name: 'IsaHistogramKdePlot',
+  name: 'IsaHistogramKdeRecoveredDensityPlot',
 
   components: {
     Plotly
@@ -87,6 +92,50 @@ export default {
       };
     },
 
+    recoveredDensityToPlotlyScatter () {
+      const lowerBoundX = Math.min(...this.datasetNoOutliers);
+      const upperBoundX = Math.max(...this.datasetNoOutliers);
+      const range = upperBoundX - lowerBoundX;
+      const histogramClassWidth = range / this.variationSeriesClassCount; // h
+
+      const resolutionStep = range / PLOT_RESOLUTION_DEFAULT;
+
+      const laplaceMu = computeLaplaceMu(this.datasetNoOutliers);
+      const laplaceLambda = computeLaplaceLambda(this.datasetNoOutliers);
+      const laplaceProbabilityDensityFunction = createLaplaceProbabilityDensityFunction(laplaceLambda, laplaceMu);
+
+      const xAxis = [];
+      const yAxis = [];
+
+      function plotFunction (x) {
+        return laplaceProbabilityDensityFunction(x) * histogramClassWidth;
+      }
+
+      for (let i = 0; i <= PLOT_RESOLUTION_DEFAULT; i++) {
+        const x = lowerBoundX + resolutionStep * i;
+        const y = plotFunction(x);
+
+        xAxis.push(x);
+        yAxis.push(y);
+      }
+
+      // Insert mu
+      for (let i = 0; i < xAxis.length; i++) {
+        if (xAxis[i] <= laplaceMu) {
+          continue;
+        }
+
+        xAxis.splice(i, 0, laplaceMu);
+        yAxis.splice(i, 0, plotFunction(laplaceMu));
+        break;
+      }
+
+      return {
+        x: xAxis,
+        y: yAxis
+      };
+    },
+
     plotlyData () {
       return [
         {
@@ -101,6 +150,12 @@ export default {
           type: 'scatter',
           line: { shape: 'spline' },
           name: 'KDE'
+        },
+        {
+          ...this.recoveredDensityToPlotlyScatter,
+          type: 'scatter',
+          line: { shape: 'spline' },
+          name: 'Recovered density'
         }
       ];
     }

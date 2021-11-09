@@ -42,3 +42,8 @@ export function studentDistributionInv (probability, degFreedom) {
 
   return up + g1(up) / degFreedom + g2(up) / degFreedom ** 2 + g3(up) / degFreedom ** 3 + g4(up) / degFreedom ** 4;
 }
+
+export function pearsonDistributionInv (probability, degFreedom) { // Chi sqared
+  const a = 2 / (9 * degFreedom);
+  return degFreedom * (1 - a + normStdDistributionInv(probability) * Math.sqrt(a)) ** 3;
+}

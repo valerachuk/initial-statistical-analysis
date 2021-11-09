@@ -27,6 +27,10 @@ export default {
       {
         name: 'Outliers',
         routeName: 'Outliers'
+      },
+      {
+        name: 'Laplace distribution identification',
+        routeName: 'LaplaceDistributionIdentification'
       }
     ]
   }),

@@ -1,0 +1,30 @@
+<div>
+  <plotly
+    :data="plotlyData"
+    :layout="plotlyLayout"
+    :display-mode-bar="true"
+  ></plotly>
+
+  <v-divider class="my-4" />
+
+  <div class="text-body-1">
+    <p>
+      χ^2 = <strong>{{ defaultRound(pearsonsChiSquaredTestStatistics) }}</strong>
+    </p>
+    <p>
+      Pearson's quantile (1 - <strong>{{ QUANTILE_APLPHA_DEFAULT }}</strong
+      >, <strong>{{ variationSeriesClasses.length }}</strong> - 1) =
+      <strong>{{ defaultRound(pearsonsQuantile) }}</strong>
+    </p>
+    <p>
+      <template v-if="isDistributionProbable">
+        χ^2 ≤ Pearson's quantile. This distribution is probably the Laplace
+        distribution.
+      </template>
+      <template v-else>
+        χ^2 > Pearson's quantile. This distribution is probably not the Laplace
+        distribution.
+      </template>
+    </p>
+  </div>
+</div>

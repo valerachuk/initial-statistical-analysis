@@ -4,7 +4,8 @@ import {
   VariationSeriesEcdf,
   HistogramKde,
   StatisticalCharacteristics,
-  Outliers
+  Outliers,
+  LaplaceDistributionIdentification
 } from '@views';
 
 Vue.use(VueRouter);
@@ -35,6 +36,11 @@ const routes = [
     path: '/outliers',
     name: 'Outliers',
     component: Outliers
+  },
+  {
+    path: '/laplace-distribution-identification',
+    name: 'LaplaceDistributionIdentification',
+    component: LaplaceDistributionIdentification
   }
 ];
 

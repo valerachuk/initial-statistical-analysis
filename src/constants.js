@@ -1,1 +1,3 @@
 export const OUTLIERS_ALPHA_DEFAULT = 0.01;
+export const QUANTILE_APLPHA_DEFAULT = 0.05;
+export const PLOT_RESOLUTION_DEFAULT = 100;
